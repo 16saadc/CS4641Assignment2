@@ -41,7 +41,7 @@ public class OptdigitsTest {
     
     private static Instance[] instances;
     
-    private static int inputLayer, hiddenLayer, outputLayer = 10, trainingIterations;
+    private static int inputLayer, hiddenLayer, outputLayer = 1, trainingIterations;
     private static BackPropagationNetworkFactory factory = new BackPropagationNetworkFactory();
     private static ErrorMeasure measure = new SumOfSquaresError();
     
