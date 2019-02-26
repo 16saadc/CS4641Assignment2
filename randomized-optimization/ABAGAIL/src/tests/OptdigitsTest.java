@@ -63,7 +63,7 @@ public class OptdigitsTest {
      */
     public static void main(String[] args) throws IOException {
         
-        if (args.length != 3) {
+        if (args.length < 3) {
             System.out.println("Please enter these 3 arguments:" +
                 " number of hidden layers, number of iterations, and " +
                 " a string representing the algorithm you wish to run");
@@ -72,7 +72,7 @@ public class OptdigitsTest {
             System.exit(0);
         }
         
-        String path = "src/tests/data/optdigits.arff"; // Path to data file. Change if necessary
+        String path = "src/tests/data/breast-cancer.arff"; // Path to data file. Change if necessary
         
         instances = initializeInstances(path);
         digits = new DataSet(instances);
@@ -92,7 +92,7 @@ public class OptdigitsTest {
             selected = "Simulated Annealing";
             System.out.printf("Running %s\n" +
                 "initial temperature: %f\n" +
-                "cooling temperature: %f", DEFAULT_INIT_TEMP, 
+                "cooling temperature: %f", selected, DEFAULT_INIT_TEMP,
                 DEFAULT_COOLING_FACTOR);
             oa = new SimulatedAnnealing(DEFAULT_INIT_TEMP, DEFAULT_COOLING_FACTOR, nnop);
         } else if (args[2].equalsIgnoreCase("ga")) {
@@ -100,7 +100,7 @@ public class OptdigitsTest {
             System.out.printf("Running %s\n" +
                 "Initial Population Size: %d\n" +
                 "Mates per Iteration: %d\nMutations per Iteration: %d",
-                INITIAL_POPULATION, MATES_PER_ITERATION, MUTATIONS_PER_ITERATION);
+                selected, INITIAL_POPULATION, MATES_PER_ITERATION, MUTATIONS_PER_ITERATION);
             oa = new StandardGeneticAlgorithm(INITIAL_POPULATION, MATES_PER_ITERATION, 
                 MUTATIONS_PER_ITERATION, nnop);
         } else {
