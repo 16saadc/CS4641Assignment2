@@ -8,6 +8,7 @@ import func.nn.backprop.BackPropagationNetworkFactory;
 import opt.OptimizationAlgorithm;
 import opt.RandomizedHillClimbing;
 import opt.SimulatedAnnealing;
+import opt.ga.GenericGeneticAlgorithmProblem;
 import opt.ga.StandardGeneticAlgorithm;
 import opt.prob.MIMIC;
 
@@ -133,10 +134,10 @@ public class OptdigitsTest {
 
         start = System.nanoTime();
         for (int j = 0; j < testInstances.length; j++) {
-            nn.setInputValues(instances[j].getData());
+            nn.setInputValues(testInstances[j].getData());
             nn.run();
 
-            predicted = Double.parseDouble(instances[j].getLabel().toString());
+            predicted = Double.parseDouble(testInstances[j].getLabel().toString());
             actual = Double.parseDouble(nn.getOutputValues().toString());
 
             if (Math.abs(predicted - actual) < 0.5) {
@@ -176,7 +177,7 @@ public class OptdigitsTest {
 
     private static void train(OptimizationAlgorithm oa, BackPropagationNetwork network, String oaName) throws IOException {
         System.out.println("\nError results for " + oaName + "\n---------------------------");
-        FileWriter f = new FileWriter(oaName.trim() + "-train.csv"); // Writes training results to csv file
+        FileWriter f = new FileWriter(oaName.trim() + "-train.csv");
         for (int i = 0; i < trainingIterations; i++) {
             oa.train();
 
@@ -202,6 +203,12 @@ public class OptdigitsTest {
 
             System.out.println(df.format(error) + ", " + df.format(testError));
             f.write(i + ", " + df.format(error) + ", " + df.format(testError));
+            if (oa instanceof SimulatedAnnealing) {
+                f.write(", " + DEFAULT_INIT_TEMP + ", " + DEFAULT_COOLING_FACTOR);
+            } else if (oa instanceof StandardGeneticAlgorithm) {
+                f.write(", " + INITIAL_POPULATION + ", " + MATES_PER_ITERATION + ", " + MUTATIONS_PER_ITERATION);
+            }
+            f.write("\n");
             f.flush();
         }
         f.close();
