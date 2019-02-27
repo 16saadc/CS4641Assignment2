@@ -176,7 +176,7 @@ public class OptdigitsTest {
 
     private static void train(OptimizationAlgorithm oa, BackPropagationNetwork network, String oaName) throws IOException {
         System.out.println("\nError results for " + oaName + "\n---------------------------");
-        FileWriter f = new FileWriter(oaName.trim() + "-train.csv"); // Writes training results to 
+        FileWriter f = new FileWriter(oaName.trim() + "-train.csv"); // Writes training results to csv file
         for (int i = 0; i < trainingIterations; i++) {
             oa.train();
 
