@@ -40,10 +40,10 @@ public class BreastCancerTest {
 
     public static void main(String[] args) {
 
-        double[] trials = new double[3];
+        double[] trials = new double[5];
         for (int iter = 1000; iter <= 11000; iter += 2000) {
             trainingIterations = iter;
-            for (int k = 0; k < 3; k++) {
+            for (int k = 0; k < 5; k++) {
 
                 for (int i = 0; i < oa.length; i++) {
                     networks[i] = factory.createClassificationNetwork(
@@ -106,7 +106,7 @@ public class BreastCancerTest {
                 average += x;
             }
 
-            average /= 3.0;
+            average /= 5.0;
             System.out.println("Iterations: " + trainingIterations);
             System.out.println("Average: " + average);
         }

@@ -40,9 +40,9 @@ public class FourPeaksTest {
 
         for (int n = 50; n <= 400; n += 50) {
             N = n;
-            double[] values = new double[3];
+            double[] values = new double[5];
             int index = 0;
-            for (int trial = 0; trial < 3; trial++) {
+            for (int trial = 0; trial < 5; trial++) {
 
 
                 int[] ranges = new int[N];
