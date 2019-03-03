@@ -39,49 +39,68 @@ public class TravelingSalesmanTest {
      * @param args ignored
      */
     public static void main(String[] args) {
-        Random random = new Random();
-        // create the random points
-        double[][] points = new double[N][2];
-        for (int i = 0; i < points.length; i++) {
-            points[i][0] = random.nextDouble();
-            points[i][1] = random.nextDouble();   
+        for (int n = 30; n <= 150; n += 30) {
+
+            Random random = new Random();
+            // create the random points
+            double[][] points = new double[N][2];
+            for (int i = 0; i < points.length; i++) {
+                points[i][0] = random.nextDouble();
+                points[i][1] = random.nextDouble();
+            }
+            // for rhc, sa, and ga we use a permutation based encoding
+            TravelingSalesmanEvaluationFunction ef = new TravelingSalesmanRouteEvaluationFunction(points);
+            Distribution odd = new DiscretePermutationDistribution(N);
+            NeighborFunction nf = new SwapNeighbor();
+            MutationFunction mf = new SwapMutation();
+            CrossoverFunction cf = new TravelingSalesmanCrossOver(ef);
+            HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);
+            GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
+
+            FixedIterationTrainer fit;
+/**
+            RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
+            fit = new FixedIterationTrainer(rhc, k);
+            double start = System.nanoTime(), end, trainingTime, testingTime, correct = 0, incorrect = 0;
+            fit.train();
+            end = System.nanoTime();
+            trainingTime = end - start;
+            trainingTime /= Math.pow(10, 9);
+            System.out.println("Training time: " + trainingTime);
+            System.out.println(ef.value(rhc.getOptimal()));
+
+
+            SimulatedAnnealing sa = new SimulatedAnnealing(1E12, .95, hcp);
+            fit = new FixedIterationTrainer(sa, k);
+            double start = System.nanoTime(), end, trainingTime, testingTime, correct = 0, incorrect = 0;
+            fit.train();
+            end = System.nanoTime();
+            trainingTime = end - start;
+            trainingTime /= Math.pow(10, 9);
+            System.out.println("Training time: " + trainingTime);
+            System.out.println(ef.value(sa.getOptimal()));
+ */
+
+            StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 100, 50, gap);
+            fit = new FixedIterationTrainer(ga, 200000);
+            fit.train();
+
+            System.out.println(ef.value(ga.getOptimal()));
+
+/**
+            // for mimic we use a sort encoding
+            ef = new TravelingSalesmanSortEvaluationFunction(points);
+            int[] ranges = new int[N];
+            Arrays.fill(ranges, N);
+            odd = new DiscreteUniformDistribution(ranges);
+            Distribution df = new DiscreteDependencyTree(.1, ranges);
+            ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
+
+            MIMIC mimic = new MIMIC(200, 100, pop);
+            fit = new FixedIterationTrainer(mimic, k);
+            fit.train();
+            System.out.println(ef.value(mimic.getOptimal()));
+             */
         }
-        // for rhc, sa, and ga we use a permutation based encoding
-        TravelingSalesmanEvaluationFunction ef = new TravelingSalesmanRouteEvaluationFunction(points);
-        Distribution odd = new DiscretePermutationDistribution(N);
-        NeighborFunction nf = new SwapNeighbor();
-        MutationFunction mf = new SwapMutation();
-        CrossoverFunction cf = new TravelingSalesmanCrossOver(ef);
-        HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);
-        GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
-        
-        RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);      
-        FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 200000);
-        fit.train();
-        System.out.println(ef.value(rhc.getOptimal()));
-        
-        SimulatedAnnealing sa = new SimulatedAnnealing(1E12, .95, hcp);
-        fit = new FixedIterationTrainer(sa, 200000);
-        fit.train();
-        System.out.println(ef.value(sa.getOptimal()));
-        
-        StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 20, gap);
-        fit = new FixedIterationTrainer(ga, 1000);
-        fit.train();
-        System.out.println(ef.value(ga.getOptimal()));
-        
-        // for mimic we use a sort encoding
-        ef = new TravelingSalesmanSortEvaluationFunction(points);
-        int[] ranges = new int[N];
-        Arrays.fill(ranges, N);
-        odd = new  DiscreteUniformDistribution(ranges);
-        Distribution df = new DiscreteDependencyTree(.1, ranges); 
-        ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
-        
-        MIMIC mimic = new MIMIC(200, 100, pop);
-        fit = new FixedIterationTrainer(mimic, 1000);
-        fit.train();
-        System.out.println(ef.value(mimic.getOptimal()));
-        
     }
 }

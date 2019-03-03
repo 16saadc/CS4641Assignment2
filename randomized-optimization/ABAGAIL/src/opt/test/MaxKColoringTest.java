@@ -73,7 +73,7 @@ public class MaxKColoringTest {
         
         Distribution df = new DiscreteDependencyTree(.1); 
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
-        
+
         long starttime = System.currentTimeMillis();
         RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);      
         FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 20000);
@@ -81,7 +81,8 @@ public class MaxKColoringTest {
         System.out.println("RHC: " + ef.value(rhc.getOptimal()));
         System.out.println(ef.foundConflict());
         System.out.println("Time : "+ (System.currentTimeMillis() - starttime));
-        
+
+
         System.out.println("============================");
         
         starttime = System.currentTimeMillis();
@@ -111,6 +112,6 @@ public class MaxKColoringTest {
         System.out.println("MIMIC: " + ef.value(mimic.getOptimal()));  
         System.out.println(ef.foundConflict());
         System.out.println("Time : "+ (System.currentTimeMillis() - starttime));
-        
+
     }
 }

@@ -86,7 +86,7 @@ public class ArffDataSetReader extends DataSetReader {
 		String line = in.readLine();
 		Pattern pattern = Pattern.compile("[ ,]+");
 		while (line != null) {
-			if (!line.isEmpty() && line.charAt(0) != '%') {
+			if (!line.isEmpty() && line.charAt(0) != '%' && line.charAt(0) != '@') {
 				String[] values = pattern.split(line.trim());
 				double[] ins = new double[values.length];
 				for (int i = 0; i < values.length; i++) {
@@ -107,6 +107,7 @@ public class ArffDataSetReader extends DataSetReader {
 				}
 				Instance i = new Instance(new DenseVector(ins), new Instance(Double.parseDouble(values[values.length - 1])));
 				instances.add(i);
+				System.out.println(i);
 			}
 			line = in.readLine();
 		}

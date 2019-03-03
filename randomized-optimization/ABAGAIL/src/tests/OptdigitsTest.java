@@ -77,7 +77,7 @@ public class OptdigitsTest {
             System.exit(0);
         }
 
-        String path = "src/tests/data/breast-cancer.arff"; // Path to data file. Change if necessary
+        String path = "src/tests/data/breast-cancer-wisc.arff"; // Path to data file. Change if necessary
 
         instances = initializeInstances(path);
         TestTrainSplitFilter ttsf = new TestTrainSplitFilter(70);
